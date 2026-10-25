@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10152d"><meta name="description" content="MindNest AI is your friendly AI study companion. Ask questions, upload study material, and create college notes.">
+  <title>MindNest AI — Ask. Learn. Grow.</title><link rel="icon" href="/logo.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css"><script src="/app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="/" aria-label="MindNest AI home"><img src="/logo.svg" alt="" class="brand-logo"><span class="brand-copy"><strong>MindNest <em>AI</em></strong><small>Your study companion</small></span></a>
+      <button class="new-chat" id="newChat"><span>＋</span> New conversation</button>
+      <div class="side-label">STUDY TOOLS</div>
+      <button class="tool-link active" data-mode="chat"><span class="tool-icon">✧</span><span>Ask anything</span></button>
+      <button class="tool-link" data-mode="notes"><span class="tool-icon">▤</span><span>College notes</span><span class="mini-tag">AI</span></button>
+      <button class="tool-link" data-mode="explain"><span class="tool-icon">◉</span><span>Explain a topic</span></button>
+      <button class="tool-link" data-mode="quiz"><span class="tool-icon">✓</span><span>Practice quiz</span></button>
+      <div class="sidebar-bottom"><div class="tip-card"><div class="tip-spark">✦</div><strong>A little progress every day.</strong><p>Ask questions. Explore ideas. Build your confidence.</p></div><div class="sidebar-footer"><span class="status-dot"></span><span id="apiStatus">Checking AI connection…</span></div></div>
+    </aside>
+    <main class="main-area">
+      <header class="topbar"><button class="mobile-menu" id="mobileMenu" aria-label="Open menu">☰</button><div class="breadcrumb">Your learning space <span>/</span> <b id="modeLabel">Ask anything</b></div><div class="top-pill"><span class="status-dot"></span> AI study buddy</div></header>
+      <section class="chat-scroll" id="chatScroll">
+        <div class="welcome" id="welcome">
+          <div class="hero-mark"><img src="/logo.svg" alt="MindNest AI mascot"></div>
+          <div class="eyebrow"><span class="eyebrow-line"></span> A SMARTER WAY TO STUDY <span class="eyebrow-line"></span></div>
+          <h1>Hey there, <span>learner.</span></h1><p class="welcome-sub">What would you like to understand today?</p>
+          <div class="prompt-grid">
+            <button class="prompt-card" data-prompt="Explain photosynthesis in simple terms, with an example."><span class="prompt-icon cyan">✧</span><strong>Explain a concept</strong><small>Make a difficult topic feel simple</small><span class="card-arrow">↗</span></button>
+            <button class="prompt-card" data-mode="notes" data-prompt="Create well-organized college study notes on the topic of my choice. Ask me for the subject if needed."><span class="prompt-icon violet">▤</span><strong>Create study notes</strong><small>Turn a topic into revision-ready notes</small><span class="card-arrow">↗</span></button>
+            <button class="prompt-card" data-prompt="Help me make a realistic study plan for my next 7 days."><span class="prompt-icon pink">◷</span><strong>Plan my study time</strong><small>Build a manageable study routine</small><span class="card-arrow">↗</span></button>
+            <button class="prompt-card" data-mode="quiz" data-prompt="Create a short general knowledge practice quiz with answers at the end."><span class="prompt-icon gold">✓</span><strong>Test my knowledge</strong><small>Practice questions and answers</small><span class="card-arrow">↗</span></button>
+          </div>
+          <div class="privacy-note"><span>✦</span> Upload your notes, PDF, or an image and learn from your own material.</div>
+        </div>
+        <div class="messages" id="messages" aria-live="polite"></div>
+      </section>
+      <footer class="composer-wrap"><div class="composer" id="composer">
+        <div class="file-preview" id="filePreview" hidden><span class="file-chip-icon">▧</span><span id="fileName"></span><button id="removeFile" aria-label="Remove attachment">×</button></div>
+        <textarea id="messageInput" rows="1" placeholder="Ask a question, explore an idea…" aria-label="Message MindNest AI"></textarea>
+        <div class="composer-bottom"><div class="composer-actions"><button class="attach-btn" id="attachBtn" title="Attach an image, PDF, TXT or Markdown file"><span>＋</span> <span class="attach-text">Attach file</span></button><input type="file" id="fileInput" hidden accept=".png,.jpg,.jpeg,.webp,.gif,.pdf,.txt,.md,.markdown,image/png,image/jpeg,image/webp,image/gif,application/pdf,text/plain"><span class="file-hint">Up to 10 MB</span></div><button class="send-btn" id="sendBtn" aria-label="Send message"><span>Send</span><span>↑</span></button></div>
+      </div><p class="disclaimer">MindNest AI can make mistakes. Double-check important information.</p></footer>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+</body></html>
