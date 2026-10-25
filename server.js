@@ -6,7 +6,6 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const OpenAI = require('openai');
 const pdfParse = require('pdf-parse');
-const { fileTypeFromBuffer } = require('file-type');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -37,6 +36,17 @@ function makeSystemPrompt(mode) {
   return base + ' Answer the user directly. For academic topics, show reasoning and examples at an appropriate level.';
 }
 
+
+function detectMimeFromBuffer(buffer) {
+  if (!buffer || buffer.length < 4) return null;
+  if (buffer[0] === 0xFF && buffer[1] === 0xD8 && buffer[2] === 0xFF) return 'image/jpeg';
+  if (buffer[0] === 0x89 && buffer.toString('ascii', 1, 4) === 'PNG') return 'image/png';
+  if (buffer.toString('ascii', 0, 4) === 'RIFF' && buffer.toString('ascii', 8, 12) === 'WEBP') return 'image/webp';
+  if (buffer.toString('ascii', 0, 3) === 'GIF') return 'image/gif';
+  if (buffer.toString('ascii', 0, 5) === '%PDF-') return 'application/pdf';
+  return null;
+}
+
 function extractDataUrlMime(dataUrl) {
   const m = /^data:(image\/(?:jpeg|png|webp|gif));base64,/.exec(dataUrl);
   return m ? m[1] : null;
@@ -53,9 +63,9 @@ app.post('/api/chat', upload.single('file'), async (req, res) => {
     let fileSummary = '';
     if (req.file) {
       const ext = path.extname(req.file.originalname).toLowerCase();
-      const detected = await fileTypeFromBuffer(req.file.buffer).catch(() => null);
+      const detectedMime = detectMimeFromBuffer(req.file.buffer);
       if (['.png','.jpg','.jpeg','.webp','.gif'].includes(ext)) {
-        const mime = detected?.mime || ({'.jpg':'image/jpeg','.jpeg':'image/jpeg','.png':'image/png','.webp':'image/webp','.gif':'image/gif'})[ext];
+        const mime = detectedMime || ({'.jpg':'image/jpeg','.jpeg':'image/jpeg','.png':'image/png','.webp':'image/webp','.gif':'image/gif'})[ext];
         if (!['image/jpeg','image/png','image/webp','image/gif'].includes(mime)) return res.status(400).json({ error: 'That image format is not supported. Please use PNG, JPG, WEBP, or GIF.' });
         content.push({ type: 'image_url', image_url: { url: `data:${mime};base64,${req.file.buffer.toString('base64')}`, detail: 'auto' } });
         fileSummary = `Image attached: ${req.file.originalname}`;
