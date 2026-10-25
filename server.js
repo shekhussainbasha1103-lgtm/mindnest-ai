@@ -1,5 +1,10 @@
 require('dotenv').config();
 const express = require('express');
+const { GoogleGenAI } = require("@google/genai");
+
+const ai = new GoogleGenAI({
+  apiKey: process.env.GEMINI_API_KEY
+});
 const path = require('path');
 const multer = require('multer');
 const helmet = require('helmet');
